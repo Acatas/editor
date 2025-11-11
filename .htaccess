@@ -15,7 +15,7 @@ Options -ExecCGI
 </FilesMatch>
 
 # Set file size limits
-LimitRequestBody 52428800  # 50MB limit
+LimitRequestBody 52428800
 
 # Enable compression for downloads
 <IfModule mod_deflate.c>
