@@ -1,0 +1,23 @@
+# Security settings for Apache
+Options -Indexes
+Options -ExecCGI
+
+# Prevent access to PHP files in upload directories
+<FilesMatch "\.php$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Allow only specific file types
+<FilesMatch "\.(jpg|jpeg|png|gif|bmp|tiff|webp|zip)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# Set file size limits
+LimitRequestBody 52428800  # 50MB limit
+
+# Enable compression for downloads
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/zip
+</IfModule>
