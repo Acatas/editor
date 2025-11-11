@@ -1,4 +1,12 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Log errors to a file
+ini_set('log_errors', 1);
+ini_set('error_log', 'error.log');
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
@@ -7,6 +15,42 @@ header('Access-Control-Allow-Headers: Content-Type');
 // Handle preflight requests
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
+}
+
+// Simple test endpoint
+if (isset($_GET['test'])) {
+    echo json_encode([
+        'status' => 'OK',
+        'php_version' => phpversion(),
+        'gd_enabled' => extension_loaded('gd'),
+        'zip_enabled' => extension_loaded('zip'),
+        'upload_max_filesize' => ini_get('upload_max_filesize'),
+        'post_max_size' => ini_get('post_max_size'),
+        'max_execution_time' => ini_get('max_execution_time'),
+        'memory_limit' => ini_get('memory_limit')
+    ]);
+    exit();
+}
+
+// Check required PHP extensions
+$required_extensions = ['gd', 'zip'];
+$missing_extensions = [];
+
+foreach ($required_extensions as $ext) {
+    if (!extension_loaded($ext)) {
+        $missing_extensions[] = $ext;
+    }
+}
+
+if (!empty($missing_extensions)) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Missing required PHP extensions: ' . implode(', ', $missing_extensions),
+        'required_extensions' => $required_extensions,
+        'missing_extensions' => $missing_extensions
+    ]);
+    exit();
 }
 
 // Configuration
@@ -315,10 +359,31 @@ try {
     echo json_encode($result);
     
 } catch (Exception $e) {
-    http_response_code(400);
+    // Log the error
+    error_log("Process.php error: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+    
+    http_response_code(500);
     echo json_encode([
         'success' => false,
-        'message' => $e->getMessage()
+        'message' => $e->getMessage(),
+        'error_details' => [
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString()
+        ]
+    ]);
+} catch (Error $e) {
+    // Log fatal errors
+    error_log("Process.php fatal error: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+    
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'message' => 'A fatal error occurred: ' . $e->getMessage(),
+        'error_details' => [
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ]
     ]);
 }
 ?>

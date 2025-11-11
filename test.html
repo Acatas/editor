@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Server Test</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .test { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Server Diagnostics</h1>
+    
+    <button onclick="testServer()">Test Server Configuration</button>
+    <button onclick="testUpload()">Test Upload (with dummy data)</button>
+    
+    <div id="results"></div>
+
+    <script>
+        function testServer() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing server configuration...</p>';
+            
+            fetch('process.php?test=1')
+                .then(response => response.json())
+                .then(data => {
+                    results.innerHTML = `
+                        <div class="test success">
+                            <h3>✅ Server Configuration</h3>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    results.innerHTML = `
+                        <div class="test error">
+                            <h3>❌ Server Test Failed</h3>
+                            <p>Error: ${error.message}</p>
+                        </div>
+                    `;
+                });
+        }
+
+        function testUpload() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing upload functionality...</p>';
+            
+            // Create a dummy form data
+            const formData = new FormData();
+            formData.append('action', 'test');
+            
+            fetch('process.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => {
+                try {
+                    const data = JSON.parse(text);
+                    results.innerHTML = `
+                        <div class="test success">
+                            <h3>✅ Upload Test Response</h3>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } catch (e) {
+                    results.innerHTML = `
+                        <div class="test error">
+                            <h3>❌ Upload Test Failed</h3>
+                            <p>Raw response:</p>
+                            <pre>${text}</pre>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                results.innerHTML = `
+                    <div class="test error">
+                        <h3>❌ Upload Test Failed</h3>
+                        <p>Error: ${error.message}</p>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
