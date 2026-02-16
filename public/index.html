@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing Tools</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">🖼️ Image Processing Tools</h1>
+        
+        <!-- Tool 1: Rename JPEG to JPG -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="card-title text-primary">📝 Rename JPEG to JPG</h2>
+                <p class="card-text text-muted">
+                    Upload .jpeg files and they will be converted to .jpg format for download.
+                </p>
+                
+                <form id="rename-form" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="jpeg-files" class="form-label fw-bold">Upload JPEG Files:</label>
+                        <div class="file-upload border border-primary border-3 rounded p-4 text-center bg-light" onclick="document.getElementById('jpeg-files').click()">
+                            <input type="file" id="jpeg-files" name="files[]" multiple accept=".jpeg,.jpg" onchange="displaySelectedFiles('jpeg-files', 'jpeg-file-list')">
+                            <div>📁 Click here or drag and drop your JPEG files</div>
+                            <div class="form-text mt-2">Supports: .jpeg files</div>
+                        </div>
+                        <div id="jpeg-file-list" class="file-list bg-light p-3 rounded mt-3" style="display: none;"></div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary" onclick="processRename()" id="rename-btn">
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        🔄 Rename to JPG
+                    </button>
+                    
+                    <div class="progress mt-3" role="progressbar" aria-label="Rename progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="rename-progress" style="display: none;">
+                        <div class="progress-bar" id="rename-progress-bar" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="output alert mt-3" role="alert" id="rename-output">Select JPEG files to rename them to JPG format.</div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tool 2: Resize and Center Images -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="card-title text-primary">🎨 Resize and Center Images</h2>
+                <p class="card-text text-muted">
+                    Upload images and they will be resized to 800x800 pixels while maintaining aspect ratio and centered on a white background.
+                </p>
+                
+                <form id="resize-form" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="image-files" class="form-label fw-bold">Upload Image Files:</label>
+                        <div class="file-upload border border-primary border-3 rounded p-4 text-center bg-light" onclick="document.getElementById('image-files').click()">
+                            <input type="file" id="image-files" name="files[]" multiple accept="image/*" onchange="displaySelectedFiles('image-files', 'image-file-list')">
+                            <div>🖼️ Click here or drag and drop your images</div>
+                            <div class="form-text mt-2">Supports: JPG, PNG, BMP, TIFF, etc.</div>
+                        </div>
+                        <div id="image-file-list" class="file-list bg-light p-3 rounded mt-3" style="display: none;"></div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary" onclick="processResize()" id="resize-btn">
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        🎨 Resize & Center
+                    </button>
+                    
+                    <div class="progress mt-3" role="progressbar" aria-label="Resize progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="resize-progress" style="display: none;">
+                        <div class="progress-bar" id="resize-progress-bar" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="output alert mt-3" role="alert" id="resize-output">Select images to resize and center them.</div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="text-center text-muted mt-5">
+            <p>💡 <strong>Tip:</strong> You can select multiple files at once. Processing happens on the server and results will be available for download.</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Custom JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+</html>

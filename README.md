@@ -1,22 +1,14 @@
 # 🖼️ Image Processing Tools
 
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Acatas/editor/blob/main/LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors/Naereen/StrapDown.js.svg)](https://GitHub.com/Acatas/editor/graphs/contributors/)
+[![GitHub issues](https://img.shields.io/github/issues/Naereen/StrapDown.js.svg)](https://GitHub.com/Acatas/editor/issues/)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/Naereen/StrapDown.js.svg)](https://GitHub.com/Acatas/editor/pulls/)
+
 A web-based interface for processing images with two powerful tools. Users can upload images through their browser, process them on the server, and download the results.
 
-## 📝 Tool 1: Rename JPEG to JPG
-Upload .jpeg files and they will be automatically converted to .jpg format for download.
+## ✨ Features
 
-## 🎨 Tool 2: Resize and Center Images  
-Upload images and they will be resized to 800x800 pixels while maintaining aspect ratio and centered on a white background.
-
-## 🚀 How to Use
-
-### Web Interface (Recommended)
-1. Open `index.html` in any web browser
-2. **Upload files**: Click the upload area or drag & drop your images
-3. **Process**: Click the processing button
-4. **Download**: Get your processed images as a ZIP file
-
-### Features:
 - ✅ **Drag & Drop**: Simply drag files onto the upload areas
 - ✅ **Multiple Files**: Process multiple images at once
 - ✅ **Progress Tracking**: See upload and processing progress
@@ -24,9 +16,23 @@ Upload images and they will be resized to 800x800 pixels while maintaining aspec
 - ✅ **File Validation**: Only accepts valid image formats
 - ✅ **Responsive Design**: Works on desktop and mobile
 
-## 🔧 Server Requirements
+## 🚀 Live Demo
 
-### For Apache Server:
+[Explore the Live Demo Here!](https://your-live-demo-link.com) (Coming Soon!)
+
+## 🛠️ Tools
+
+### 📝 Tool 1: Rename JPEG to JPG
+Upload .jpeg files and they will be automatically converted to .jpg format for download.
+
+### 🎨 Tool 2: Resize and Center Images  
+Upload images and they will be resized to 800x800 pixels while maintaining aspect ratio and centered on a white background.
+
+## 📦 Getting Started
+
+### Prerequisites
+
+#### For Apache Server:
 - PHP 7.4 or higher
 - GD extension enabled
 - ZipArchive extension enabled
@@ -39,43 +45,81 @@ Upload images and they will be resized to 800x800 pixels while maintaining aspec
   memory_limit = 256M
   ```
 
-### Installation on Server:
-1. Upload all files to your web directory
-2. Ensure PHP has write permissions to:
-   - `uploads/` directory
-   - `processed/` directory  
-   - `downloads/` directory
-3. Set up a cron job to run `cleanup.php` periodically:
-   ```bash
-   # Run every hour to clean old files
-   0 * * * * php /path/to/your/site/cleanup.php
-   ```
+### Installation
 
-## 📁 File Structure
-- `index.html` - Main web interface
-- `process.php` - Server-side processing script
-- `cleanup.php` - Maintenance script for old files
-- `.htaccess` - Security configuration
-- `uploads/` - Temporary upload storage
-- `processed/` - Processed images storage
-- `downloads/` - ZIP files for download
-- `change_to_jpg.py` - Standalone Python script (optional)
-- `photos.py` - Standalone Python script (optional)
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/Acatas/editor.git
+    cd your-repo
+    ```
+2.  **Move `src` and `public` to your web server:**
+    Upload the contents of the `public/` directory to your web server's root (e.g., `public_html` or `www`).
+    Ensure the `src/php/` directory is accessible by your web server, but ideally not directly web-exposed for security.
+3.  **Set up permissions:**
+    Ensure your web server (PHP) has write permissions to:
+    - `public/uploads/` directory
+    - `public/processed/` directory  
+    - `public/downloads/` directory
+    You might need to create these directories manually and set permissions:
+    ```bash
+    mkdir public/uploads public/processed public/downloads
+    chmod -R 775 public/uploads public/processed public/downloads
+    ```
+4.  **Configure `.htaccess`:**
+    The provided `.htaccess` in `public/` helps with security. Ensure it's active on your Apache server.
+5.  **Set up a cron job for cleanup:**
+    To automatically clean old files, set up a cron job to run `src/php/cleanup.php` periodically:
+    ```bash
+    # Run every hour to clean old files
+    0 * * * * php /path/to/your/site/src/php/cleanup.php
+    ```
+
+## 📁 Project Structure
+
+```
+.
+├── public/                 # Web-facing files (HTML, CSS, JS, .htaccess)
+│   ├── index.html          # Main web interface
+│   ├── test.html           # For testing purposes
+│   ├── .htaccess           # Security configuration for Apache
+│   ├── uploads/            # Temporary upload storage (create and set permissions)
+│   ├── processed/          # Processed images storage (create and set permissions)
+│   └── downloads/          # ZIP files for download (create and set permissions)
+├── src/                    # Backend source code
+│   └── php/
+│       ├── process.php     # Server-side processing script
+│       └── cleanup.php     # Maintenance script for old files
+├── scripts/                # Standalone Python scripts (optional, not used by web interface)
+│   ├── change_to_jpg.py
+│   └── photos.py
+├── CONTRIBUTING.md         # Guidelines for contributing to the project
+├── LICENSE                 # Project license (MIT)
+├── README.md               # This file
+└── requirements.txt        # Python dependencies (if using scripts directly)
+```
 
 ## 🔒 Security Features
+
 - File type validation
 - Upload size limits
 - Automatic cleanup of old files
 - Protected upload directories
 - No execution of uploaded files
 
-## 🛠️ Maintenance
-- Files older than 1 hour are automatically cleaned up
-- Run `cleanup.php` manually if needed
-- Monitor disk space in upload directories
-- Check Apache error logs for any issues
+## 🤝 Contributing
+
+We welcome contributions of all kinds! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to:
+
+- Report bugs
+- Suggest enhancements
+- Submit pull requests
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 📱 Browser Support
+
 - Chrome, Firefox, Safari, Edge
 - Mobile browsers supported
 - Requires JavaScript enabled
